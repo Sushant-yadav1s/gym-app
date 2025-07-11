@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import "./Signup.css"; // Optional: for any extra styling
+import "./Signup.css";
 import Modal from "../Modal/modal";
 import ForgotPassword from "../forgotPassword/forgotPassword";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 import { toast, ToastContainer } from 'react-toastify';
+
 const Signup = () => {
   const [forgotPassword, setForgotPassword] = useState(false);
-  const [loading, setLoading] = useState(false); // For image upload
+  const [loading, setLoading] = useState(false);
 
   const [inputField, setinputField] = useState({
     gymName: "",
@@ -18,6 +19,8 @@ const Signup = () => {
       "https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg",
   });
 
+const API = import.meta.env.VITE_API_URL;
+
   const handleClose = () => {
     setForgotPassword(false);
   };
@@ -27,7 +30,7 @@ const Signup = () => {
   };
 
   const uploadImage = async (event) => {
-    setLoading(true); // Start loading
+    setLoading(true);
     const files = event.target.files;
     const data = new FormData();
     data.append("file", files[0]);
@@ -43,25 +46,23 @@ const Signup = () => {
     } catch (err) {
       console.log("Image Upload Error:", err);
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
   const handleRegister = async () => {
-  await axios
-    .post("http://localhost:4000/auth/register", inputField)
-    .then((resp) => {
-      const successMsg = resp.data.message;
-      toast.success(successMsg);
-    })
-    .catch((err) => {
-      const errorMessage = err.response?.data?.error || "Registration failed";
-      // console.log(errorMessage); // Optional debugging
-      toast.error(errorMessage);
-    });
-};
+    await axios
+      .post(`${API}/auth/register`, inputField)
+      .then((resp) => {
+        const successMsg = resp.data.message;
+        toast.success(successMsg);
+      })
+      .catch((err) => {
+        const errorMessage = err.response?.data?.error || "Registration failed";
+        toast.error(errorMessage);
+      });
+  };
 
-  
   return (
     <div className="w-1/2 flex justify-center items-center">
       <div className="signup-scroll w-[80%] p-8 bg-gray-600/50 rounded-lg shadow-lg overflow-y-auto max-h-[85vh]">
@@ -107,7 +108,6 @@ const Signup = () => {
           className="w-full mb-2 p-2 text-white rounded-lg cursor-pointer bg-gray-700 hover:bg-gray-800 transition"
         />
 
-        {/* Image Preview or Loader */}
         {loading ? (
           <div className="w-full flex justify-center items-center mb-4">
             <CircularProgress style={{ color: "white" }} />
@@ -122,7 +122,8 @@ const Signup = () => {
 
         <button
           className="w-full bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg font-semibold mb-3 cursor-pointer"
-       onClick={()=>handleRegister()} >
+          onClick={handleRegister}
+        >
           Register
         </button>
 

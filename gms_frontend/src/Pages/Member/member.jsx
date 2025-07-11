@@ -13,6 +13,8 @@ import AddMember from "../../Components/addmember/addmember";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+const API = import.meta.env.VITE_API_URL;
+
 const Member = () => {
   const [addMembership, setAddmembership] = useState(false);
   const [addMember, setAddMember] = useState(false);
@@ -32,7 +34,7 @@ const Member = () => {
 
     try {
       const res = await axios.get(
-        `http://localhost:4000/members/searched-members?searchTerm=${search}`,
+        `${API}/members/searched-members?searchTerm=${search}`,
         { withCredentials: true }
       );
       setMembers(res.data.members);
@@ -51,7 +53,7 @@ const Member = () => {
   const fetchData = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:4000/members/all-member?skip=${startFrom}&limit=${limit}`,
+        `${API}/members/all-member?skip=${startFrom}&limit=${limit}`,
         { withCredentials: true }
       );
 

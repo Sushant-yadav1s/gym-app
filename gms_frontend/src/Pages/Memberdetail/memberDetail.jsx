@@ -5,6 +5,8 @@ import Switch from "react-switch";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+const API = import.meta.env.VITE_API_URL;
+
 const MemberDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -24,7 +26,7 @@ const MemberDetail = () => {
 
   const fetchMembershipPlans = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/plans/get-membership", {
+      const res = await axios.get(`${API}/plans/get-membership`, {
         withCredentials: true,
       });
       setMembershipPlans(res.data.membership);
@@ -36,10 +38,9 @@ const MemberDetail = () => {
 
   const fetchMember = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:4000/members/get-member/${id}`,
-        { withCredentials: true }
-      );
+      const res = await axios.get(`${API}/members/get-member/${id}`, {
+        withCredentials: true,
+      });
       const mem = res.data.member;
       setMember(mem);
       setStatus(mem.status || "Active");
@@ -64,13 +65,13 @@ const MemberDetail = () => {
   const handleRenewSave = async () => {
     try {
       await axios.post(
-        `http://localhost:4000/members/change-status/${id}`,
+        `${API}/members/change-status/${id}`,
         { status: "Active" },
         { withCredentials: true }
       );
 
       const res = await axios.post(
-        `http://localhost:4000/members/update-member-plan/${id}`,
+        `${API}/members/update-member-plan/${id}`,
         { membership },
         { withCredentials: true }
       );
@@ -100,7 +101,7 @@ const MemberDetail = () => {
             <img
               src={
                 member?.profilePicture
-                  ? `http://localhost:4000/${member.profilePicture}`
+                  ? `${API}/${member.profilePicture}`
                   : "https://images.pexels.com/photos/1229356/pexels-photo-1229356.jpeg"
               }
               alt="Member"

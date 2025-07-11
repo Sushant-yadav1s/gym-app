@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+// ✅ Add API base URL from .env
+const API = import.meta.env.VITE_API_URL;
+
 const Addmembership = ({ handleClose }) => {
   const [memberships, setMemberships] = useState([]);
   const [selected, setSelected] = useState(0);
@@ -10,7 +13,7 @@ const Addmembership = ({ handleClose }) => {
 
   const fetchMembership = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/plans/get-membership", {
+      const res = await axios.get(`${API}/plans/get-membership`, {
         withCredentials: true,
       });
       setMemberships(res.data.membership);
@@ -36,7 +39,7 @@ const Addmembership = ({ handleClose }) => {
         price: parseInt(priceInput),
       };
 
-      const res = await axios.post("http://localhost:4000/plans/add-membership", body, {
+      const res = await axios.post(`${API}/plans/add-membership`, body, {
         withCredentials: true,
       });
 
@@ -44,8 +47,7 @@ const Addmembership = ({ handleClose }) => {
       setMonthInput("");
       setPriceInput("");
 
-      // ✅ Close modal after successful add
-      if (handleClose) handleClose();
+      if (handleClose) handleClose(); // ✅ Close modal after success
     } catch (err) {
       console.error(err);
       toast.error("Failed to add/update membership");

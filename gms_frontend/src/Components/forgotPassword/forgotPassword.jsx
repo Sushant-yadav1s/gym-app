@@ -4,6 +4,9 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+// ✅ Add API base from env
+const API = import.meta.env.VITE_API_URL;
+
 const ForgotPassword = () => {
   const [step, setStep] = useState(1); // 1 = email, 2 = OTP, 3 = new password
   const [loading, setLoading] = useState(false);
@@ -21,7 +24,7 @@ const ForgotPassword = () => {
     if (step === 1 && inputField.email !== "") {
       try {
         setLoading(true);
-        const res = await axios.post('http://localhost:4000/auth/reset-password/sendOtp', {
+        const res = await axios.post(`${API}/auth/reset-password/sendOtp`, {
           email: inputField.email
         });
         toast.success(res.data.message);
@@ -36,7 +39,7 @@ const ForgotPassword = () => {
     else if (step === 2 && inputField.otp !== "") {
       try {
         setLoading(true);
-        const res = await axios.post('http://localhost:4000/auth/reset-password/checkOtp', {
+        const res = await axios.post(`${API}/auth/reset-password/checkOtp`, {
           email: inputField.email,
           otp: inputField.otp
         });
@@ -52,7 +55,7 @@ const ForgotPassword = () => {
     else if (step === 3 && inputField.newPassword !== "") {
       try {
         setLoading(true);
-        const res = await axios.post('http://localhost:4000/auth/reset-password', {
+        const res = await axios.post(`${API}/auth/reset-password`, {
           email: inputField.email,
           newPassword: inputField.newPassword
         });

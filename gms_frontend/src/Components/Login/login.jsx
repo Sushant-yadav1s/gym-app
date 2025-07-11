@@ -7,6 +7,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
+// ✅ Add API base URL from env
+const API = import.meta.env.VITE_API_URL;
+
 const Login = () => {
   const [loginfield, setloginfield] = useState({ userName: "", password: "" });
   const navigate = useNavigate();
@@ -14,7 +17,7 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/auth/login",
+        `${API}/auth/login`,
         loginfield,
         { withCredentials: true }
       );

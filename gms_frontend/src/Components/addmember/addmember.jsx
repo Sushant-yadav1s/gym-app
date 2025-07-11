@@ -3,6 +3,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+const API = import.meta.env.VITE_API_URL|| "http://localhost:4000";
+
 const AddMember = ({ handleClose }) => {
   const [formData, setFormData] = useState({
     name: "",
@@ -21,7 +23,7 @@ const AddMember = ({ handleClose }) => {
   useEffect(() => {
     const fetchMemberships = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/plans/get-membership", {
+        const res = await axios.get(`${API}/plans/get-membership`, {
           withCredentials: true,
         });
         setMemberships(res.data.membership);
@@ -78,7 +80,7 @@ const AddMember = ({ handleClose }) => {
         profilePic,
       };
 
-      const res = await axios.post("http://localhost:4000/members/register-member", body, {
+      const res = await axios.post(`${API}/members/register-member`, body, {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
@@ -111,84 +113,87 @@ const AddMember = ({ handleClose }) => {
   };
 
   return (
-    <div className="text-black p-6 w-full max-w-3xl mx-auto bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6 text-center">Add New Member</h2>
+    <div className="w-full max-w-lg mx-auto">
+      <h2 className="text-xl font-semibold text-center mb-4 text-gray-800">Add New Member</h2>
 
-      <div className="grid gap-5 grid-cols-2 text-lg">
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          placeholder="Name of the Joinee"
-          className="border-2 w-[90%] p-2 border-slate-400 rounded-md h-12"
-        />
-        <input
-          type="text"
-          name="mobile"
-          value={formData.mobile}
-          onChange={handleChange}
-          placeholder="Mobile No"
-          className="border-2 w-[90%] p-2 border-slate-400 rounded-md h-12"
-        />
-        <input
-          type="text"
-          name="address"
-          value={formData.address}
-          onChange={handleChange}
-          placeholder="Address"
-          className="border-2 w-[90%] p-2 border-slate-400 rounded-md h-12"
-        />
-        <input
-          type="date"
-          name="joinDate"
-          value={formData.joinDate}
-          onChange={handleChange}
-          className="border-2 w-[90%] p-2 border-slate-400 rounded-md h-12"
-        />
-        <select
-          name="membership"
-          value={formData.membership}
-          onChange={handleChange}
-          className="border-2 w-[90%] h-12 p-2 border-slate-400 rounded-md"
-        >
-          <option value="" disabled>Select Membership</option>
-          {memberships.map((m) => (
-            <option key={m._id} value={m._id}>
-              {m.months} Month - ₹{m.price}
-            </option>
-          ))}
-        </select>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-          className="w-[90%] h-12 border-2 border-slate-400 rounded-md p-2 cursor-pointer"
-        />
-        <div className="w-20 h-20 flex justify-center items-center">
-          {loading ? (
-            <CircularProgress size={30} />
-          ) : (
-            <img
-              src={formData.imagePreview}
-              className="w-full h-full rounded-full object-cover"
-              alt="Preview"
-            />
-          )}
+      <input
+        type="text"
+        name="name"
+        value={formData.name}
+        onChange={handleChange}
+        placeholder="Name"
+        className="w-full border px-3 py-2 rounded-md mb-3"
+      />
+
+      <input
+        type="text"
+        name="mobile"
+        value={formData.mobile}
+        onChange={handleChange}
+        placeholder="Mobile Number"
+        className="w-full border px-3 py-2 rounded-md mb-3"
+      />
+
+      <input
+        type="text"
+        name="address"
+        value={formData.address}
+        onChange={handleChange}
+        placeholder="Address"
+        className="w-full border px-3 py-2 rounded-md mb-3"
+      />
+
+      <input
+        type="date"
+        name="joinDate"
+        value={formData.joinDate}
+        onChange={handleChange}
+        className="w-full border px-3 py-2 rounded-md mb-3"
+      />
+
+      <select
+        name="membership"
+        value={formData.membership}
+        onChange={handleChange}
+        className="w-full border px-3 py-2 rounded-md mb-3"
+      >
+        <option value="">-- Select Membership --</option>
+        {memberships.map((plan) => (
+          <option key={plan._id} value={plan._id}>
+            {plan.months} Month(s) - ₹{plan.price}
+          </option>
+        ))}
+      </select>
+
+      <input
+        type="file"
+        onChange={handleImageChange}
+        className="w-full mb-3 text-sm"
+      />
+
+      {loading ? (
+        <div className="w-full flex justify-center mb-3">
+          <CircularProgress />
         </div>
-      </div>
+      ) : formData.imagePreview ? (
+        <img
+          src={formData.imagePreview}
+          alt="Preview"
+          className="w-full h-40 object-cover mb-3 rounded-md border"
+        />
+      ) : null}
 
-      <div className="flex justify-center mt-8">
-        <button
-          onClick={handleRegister}
-          disabled={submitting}
-          className={`${
-            submitting ? "opacity-50 cursor-not-allowed" : "hover:scale-105"
-          } bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold px-6 py-2 rounded-full shadow-md transition`}
-        >
-          {submitting ? "Registering..." : "Register"}
-        </button>
-      </div>
+      <button
+        onClick={handleRegister}
+        disabled={submitting}
+        className={`w-full py-2 rounded-md font-semibold text-white ${
+          submitting
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-slate-900 hover:bg-indigo-600"
+        }`}
+      >
+        {submitting ? "Registering..." : "Register Member"}
+      </button>
     </div>
   );
 };

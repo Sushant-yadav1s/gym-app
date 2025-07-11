@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 const GeneralUser = () => {
   const [header, setHeader] = useState("");
   const [members, setMembers] = useState([]);
+const API = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const func = sessionStorage.getItem("func");
@@ -48,7 +49,7 @@ const GeneralUser = () => {
       setHeader(title);
 
       if (endpoint) {
-        const res = await axios.get(`http://localhost:4000${endpoint}`, {
+        const res = await axios.get(`${API}${endpoint}`, {
           withCredentials: true,
         });
         setMembers(res.data.members || []);
