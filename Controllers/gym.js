@@ -37,11 +37,12 @@ exports.register = async (req, res) => {
 };
 
 const cookieOptions = {
-  httpOnly: true,        // Prevents client-side JS from accessing the cookie
-   secure: false,      // Ensures cookie is sent over HTTPS only
-  sameSite: "Lax",      // Needed for cross-site requests (use "Lax" for same-site apps)
-  // maxAge: 24 * 60 * 60 * 1000, // 1 day
+  httpOnly: true,
+  secure: true,           // ✅ REQUIRED for Render (HTTPS)
+  sameSite: "None",       // ✅ REQUIRED for cross-origin (frontend local, backend hosted)
+  maxAge: 24 * 60 * 60 * 1000, // ✅ 1 day
 };
+
 
 exports.login = async (req, res) => {
   try {
