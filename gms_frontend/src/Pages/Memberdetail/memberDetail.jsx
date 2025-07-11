@@ -114,10 +114,12 @@ const MemberDetail = () => {
             <div className="mb-3 font-semibold">Mobile: {member?.mobileNo}</div>
             <div className="mb-3 font-semibold">Address: {member?.address}</div>
             <div className="mb-3 font-semibold">
-              Joined Date: {member?.joinedDate && formatDate(member.joinedDate)}
+              Joined Date:{" "}
+              {member?.createdAt ? formatDate(member.createdAt) : "N/A"}
             </div>
             <div className="mb-3 font-semibold">
-              Next Bill Date: {member?.nextBillDate && formatDate(member.nextBillDate)}
+              Next Bill Date:{" "}
+              {member?.nextBillDate ? formatDate(member.nextBillDate) : "N/A"}
             </div>
             <div className="mb-3 font-semibold">
               Membership Plan: {member?.membershipName || "N/A"}
@@ -152,7 +154,9 @@ const MemberDetail = () => {
 
         {renew && status === "Active" && (
           <div className="mt-10 bg-white p-5 rounded-xl shadow-md w-full md:w-1/2">
-            <label className="block mb-2 font-semibold">Select Membership</label>
+            <label className="block mb-2 font-semibold">
+              Select Membership
+            </label>
             <select
               value={membership}
               onChange={(e) => setMembership(e.target.value)}
@@ -163,7 +167,8 @@ const MemberDetail = () => {
               </option>
               {membershipPlans.map((plan) => (
                 <option key={plan._id} value={plan._id}>
-                  {plan.months} Month{plan.months > 1 ? "s" : ""} - ₹{plan.price}
+                  {plan.months} Month{plan.months > 1 ? "s" : ""} - ₹
+                  {plan.price}
                 </option>
               ))}
             </select>
