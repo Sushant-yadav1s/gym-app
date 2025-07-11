@@ -23,6 +23,7 @@
     "react-router-dom": "^7.6.2",
     "react-switch": "^7.1.0",
     "react-toastify": "^11.0.5",
+    "serve": "^14.2.4",
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
