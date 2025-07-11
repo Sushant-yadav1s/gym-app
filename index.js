@@ -9,9 +9,10 @@ const PORT = process.env.PORT || 4000; // fallback if .env is missing
 
 // ✅ Middleware
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: true, // ✅ allow all origins temporarily
   credentials: true
 }));
+
 
 app.use(cookieParser());
 
