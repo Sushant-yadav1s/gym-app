@@ -143,14 +143,14 @@ const AddMember = ({ handleClose }) => {
         className="w-full border px-3 py-2 rounded-md mb-3"
       />
 
-      <input
+{/*       <input
         type="date"
         name="joiningDate" // ✅ Changed from joinDate
         value={formData.joiningDate}
         onChange={handleChange}
         className="w-full border px-3 py-2 rounded-md mb-3"
       />
-
+ */}
       <select
         name="membership"
         value={formData.membership}
