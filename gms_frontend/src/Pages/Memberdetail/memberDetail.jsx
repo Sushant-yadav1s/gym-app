@@ -121,9 +121,10 @@ const MemberDetail = () => {
               Next Bill Date:{" "}
               {member?.nextBillDate ? formatDate(member.nextBillDate) : "N/A"}
             </div>
-            <div className="mb-3 font-semibold">
-              Membership Plan: {member?.membershipName || "N/A"}
-            </div>
+           <div className="mb-3 font-semibold">
+  Membership Plan: {member?.membership ? `${member.membership.months} Month(s)` : "N/A"}
+</div>
+
             <div className="mb-3 font-semibold flex items-center gap-3">
               Status:{" "}
               <Switch
