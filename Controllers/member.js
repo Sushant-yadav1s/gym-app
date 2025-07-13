@@ -65,46 +65,50 @@ function addMonthsToDate(months, joiningDate) {
 
 exports.registermember = async (req, res) => {
   try {
-    const { name, mobileNo, address, membership, profilePic, joiningDate } =
-      req.body;
+    const { name, mobileNo, address, membership, profilePic, joiningDate } = req.body;
+
     const member = await Member.findOne({ gym: req.gym._id, mobileNo });
     if (member) {
-      return res
-        .status(409)
-        .json({ error: "Already registered with this Mobile No" });
+      return res.status(409).json({ error: "Already registered with this Mobile No" });
     }
 
     const memberShip = await Membership.findOne({
       _id: membership,
       gym: req.gym._id,
     });
-    const membershipMonth = memberShip.months;
-    if (memberShip) {
-      let jngDate = new Date(joiningDate);
 
-      const nextBillDate = addMonthsToDate(membershipMonth, jngDate);
-      let newmember = new Member({
-        name,
-        mobileNo,
-        address,
-        membership,
-        gym: req.gym._id,
-        profilePic,
-        nextBillDate,
-        joiningDate: jngDate,
-      });
-      await newmember.save();
-      res
-        .status(200)
-        .json({ error: "member Registered Successfully", newmember });
-    } else {
+    if (!memberShip) {
       return res.status(409).json({ error: "NO such Membership are there" });
     }
+
+    const membershipMonth = memberShip.months;
+    const jngDate = joiningDate ? new Date(joiningDate) : new Date(); // ✅ Fix here
+    const nextBillDate = addMonthsToDate(membershipMonth, jngDate);
+
+    const newmember = new Member({
+      name,
+      mobileNo,
+      address,
+      membership,
+      gym: req.gym._id,
+      profilePic,
+      nextBillDate,
+      joiningDate: jngDate,
+    });
+
+    await newmember.save();
+
+    return res.status(200).json({
+      error: "member Registered Successfully",
+      newmember,
+    });
+
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "Server Error" });
   }
 };
+
 
 exports.searchMember = async (req, res) => {
   try {
