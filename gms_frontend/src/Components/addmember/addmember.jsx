@@ -10,7 +10,6 @@ const AddMember = ({ handleClose }) => {
     name: "",
     mobile: "",
     address: "",
-    joiningDate: "", // ✅ Fixed key here
     membership: "",
     profilePic: "",
     imagePreview: "",
@@ -61,9 +60,9 @@ const AddMember = ({ handleClose }) => {
   };
 
   const handleRegister = async () => {
-    const { name, mobile, address, joiningDate, membership, profilePic } = formData;
+    const { name, mobile, address, membership, profilePic } = formData;
 
-    if (!name || !mobile || !address || !joiningDate || !membership) {
+    if (!name || !mobile || !address || !membership) {
       toast.error("Please fill all required fields");
       return;
     }
@@ -75,9 +74,9 @@ const AddMember = ({ handleClose }) => {
         name: name.trim(),
         mobileNo: mobile.trim(),
         address: address.trim(),
-        joiningDate: new Date(joiningDate).toISOString(), // ✅ Corrected field
         membership,
         profilePic,
+        // ✅ No joiningDate sent, backend will handle it
       };
 
       const res = await axios.post(`${API}/members/register-member`, body, {
@@ -96,7 +95,6 @@ const AddMember = ({ handleClose }) => {
         name: "",
         mobile: "",
         address: "",
-        joiningDate: "", // ✅ Reset field name
         membership: "",
         profilePic: "",
         imagePreview: "",
@@ -143,14 +141,8 @@ const AddMember = ({ handleClose }) => {
         className="w-full border px-3 py-2 rounded-md mb-3"
       />
 
-{/*       <input
-        type="date"
-        name="joiningDate" // ✅ Changed from joinDate
-        value={formData.joiningDate}
-        onChange={handleChange}
-        className="w-full border px-3 py-2 rounded-md mb-3"
-      />
- */}
+      {/* No date input field here */}
+
       <select
         name="membership"
         value={formData.membership}
