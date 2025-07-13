@@ -1,6 +1,6 @@
 const Member = require("../Modals/member");
 const Membership = require("../Modals/membership");
-const Member = require("../Modals/member");
+
 
 exports.getAllMember = async (req, res) => {
   try {
