@@ -1,27 +1,34 @@
 const Member = require("../Modals/member");
 const Membership = require("../Modals/membership");
+const Member = require("../Modals/member");
+
 exports.getAllMember = async (req, res) => {
   try {
-    const { skip, limit } = req.query;
+    const { skip = 0, limit = 10 } = req.query; // fallback if not passed
 
-    const members = await Member.find({ gym: req.gym._id });
-    const totalMember = members.length;
+    // Get total members
+    const totalMembers = await Member.countDocuments({ gym: req.gym._id });
+
+    // Get paginated and populated members
     const limitedMembers = await Member.find({ gym: req.gym._id })
+      .populate("membership") // ✅ This adds full membership object
       .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit);
+      .skip(parseInt(skip))
+      .limit(parseInt(limit));
+
     res.status(200).json({
-      message: members.length
-        ? "Fetched Members SuccessFully"
-        : "No any Member Registered yet",
+      message: limitedMembers.length
+        ? "Fetched Members Successfully"
+        : "No Member Registered Yet",
       members: limitedMembers,
-      totalMembers: totalMember,
+      totalMembers,
     });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "Server Error" });
   }
 };
+
 
 function addMonthsToDate(months, joiningDate) {
   // Get current year, month, and day
