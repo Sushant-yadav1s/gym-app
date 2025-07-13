@@ -3,14 +3,14 @@ import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const API = import.meta.env.VITE_API_URL|| "http://localhost:4000";
+const API = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
 const AddMember = ({ handleClose }) => {
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
     address: "",
-    joinDate: "",
+    joiningDate: "", // ✅ Fixed key here
     membership: "",
     profilePic: "",
     imagePreview: "",
@@ -61,9 +61,9 @@ const AddMember = ({ handleClose }) => {
   };
 
   const handleRegister = async () => {
-    const { name, mobile, address, joinDate, membership, profilePic } = formData;
+    const { name, mobile, address, joiningDate, membership, profilePic } = formData;
 
-    if (!name || !mobile || !address || !joinDate || !membership) {
+    if (!name || !mobile || !address || !joiningDate || !membership) {
       toast.error("Please fill all required fields");
       return;
     }
@@ -75,7 +75,7 @@ const AddMember = ({ handleClose }) => {
         name: name.trim(),
         mobileNo: mobile.trim(),
         address: address.trim(),
-        joiningDate: new Date(joinDate).toISOString(),
+        joiningDate: new Date(joiningDate).toISOString(), // ✅ Corrected field
         membership,
         profilePic,
       };
@@ -96,7 +96,7 @@ const AddMember = ({ handleClose }) => {
         name: "",
         mobile: "",
         address: "",
-        joinDate: "",
+        joiningDate: "", // ✅ Reset field name
         membership: "",
         profilePic: "",
         imagePreview: "",
@@ -145,8 +145,8 @@ const AddMember = ({ handleClose }) => {
 
       <input
         type="date"
-        name="joinDate"
-        value={formData.joinDate}
+        name="joiningDate" // ✅ Changed from joinDate
+        value={formData.joiningDate}
         onChange={handleChange}
         className="w-full border px-3 py-2 rounded-md mb-3"
       />
